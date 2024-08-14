@@ -21,6 +21,12 @@ async def chatting(message: Message, state: FSMContext):
 
 @user.message(Chat.text)
 async def chat_response(message: Message, state: FSMContext):
+    await state.set_state(Chat.wait)
     response = await gpt_text(message.text, 'gpt-3.5-turbo')
     await message.answer(response)
+    await state.clear()
 
+
+@user.message(Chat.wait)
+async def wait_response(message: Message):
+    await message.answer('Ваш запрос обрабатывается...')
