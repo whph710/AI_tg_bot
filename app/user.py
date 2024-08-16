@@ -5,11 +5,13 @@ import app.keyboards as kb
 from app.states import Chat
 from aiogram.fsm.context import FSMContext
 from app.generators import gpt_text
+from app.database.requests import set_user
 user = Router()
 
 
 @user.message(CommandStart())
 async def command_start(message: Message):
+    await set_user(message.from_user.id)
     await message.answer(f'Привет, {message.from_user.full_name}!\n', reply_markup=kb.main)
 
 
