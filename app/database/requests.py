@@ -13,6 +13,6 @@ async def set_user(tg_id):
         # Если пользователь не найден в базе данных
         if not user:
             # Создание нового пользователя и добавление его в сессию
-            session.add(User(tg_id=tg_id))
+            session.add(User(tg_id=tg_id, balance='0'))
             # Сохранение изменений в базе данных
             await session.commit()
