@@ -1,5 +1,16 @@
 from aiogram.types import ReplyKeyboardMarkup, KeyboardButton
 
-main = ReplyKeyboardMarkup(keyboard=[
-    [KeyboardButton(text='Генератор текста')],
-], resize_keyboard=True, input_field_placeholder='Выберите действие', one_time_keyboard=True)
+# Создание главной клавиатуры
+main = ReplyKeyboardMarkup(
+    # Описание клавиатуры
+    keyboard=[
+        # Кнопка для вызова генератора текста
+        [KeyboardButton(text='Генератор текста')],
+    ],
+    # Размер клавиатуры
+    resize_keyboard=True,
+    # Подсказка для поля ввода
+    input_field_placeholder='Выберите действие',
+    # Клавиатура будет скрыта после одного использования
+    one_time_keyboard=True
+)
