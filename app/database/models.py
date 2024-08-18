@@ -51,6 +51,8 @@ class AiModel(Base):
     name: Mapped[str] = mapped_column(String(25))
     # Поле ai_type - тип AI, ссылка на таблицу ai_types
     ai_type: Mapped[int] = mapped_column(ForeignKey('ai_types.id'))
+    # Поле price - цена модели AI
+    price: Mapped[str] = mapped_column(String(25))
 
 
 # Создание модели заказа

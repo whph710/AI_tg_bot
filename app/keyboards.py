@@ -14,3 +14,10 @@ main = ReplyKeyboardMarkup(
     # Клавиатура будет скрыта после одного использования
     one_time_keyboard=True
 )
+
+cancel = ReplyKeyboardMarkup(
+    keyboard=[
+        [KeyboardButton(text='Отмена')]
+    ],
+    resize_keyboard=True
+)
