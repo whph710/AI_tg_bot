@@ -2,9 +2,9 @@ from aiogram import Router, F
 from aiogram.types import Message, CallbackQuery
 from aiogram.filters import CommandStart
 import app.keyboards as kb
-from app.states import Chat
+from app.states import Chat, Image
 from aiogram.fsm.context import FSMContext
-from app.generators import gpt_text
+from app.generators import gpt_text, gpt_image
 from app.database.requests import set_user, get_user, calculate
 from decimal import Decimal
 
@@ -59,7 +59,47 @@ async def command_start(message: Message, state: FSMContext):
 
 
 # Обработчик сообщений в состоянии диалога Chat.wait
+@user.message(Image.wait)
 @user.message(Chat.wait)
 async def wait_response(message: Message):
     # Отправка сообщения с информацией о задержке
     await message.answer('Ваш запрос обрабатывается...')
+
+
+@user.message(F.text == 'Генератор изображения')
+async def chatting(message: Message, state: FSMContext):
+    # Проверка баланса
+    user = await get_user(message.from_user.id)
+    if Decimal(user.balance) > 0:
+        # Установка состояния диалога
+        await state.set_state(Image.text)
+        # Отправка сообщения с запросом ввода текста
+        await message.answer(f'Введи ваш запрос', reply_markup=kb.cancel)
+    else:
+        await message.answer(f'Недостаточно средств')
+
+
+# Обработчик сообщений с текстом "Генератор изображения"
+@user.message(Image.text)
+async def chat_response(message: Message, state: FSMContext):
+    user = await get_user(message.from_user.id)
+    if Decimal(user.balance) > 0:
+        # Установка состояния ожидания ответа
+        await state.set_state(Image.wait)
+        # Вызов функции генерации текста
+        response = await gpt_image(message.text, 'dall-e-3')
+        # Вызов функции расчета баланса
+        await calculate(message.from_user.id, response['usage'], 'dall-e-3')
+        try:
+            await message.answer_photo(photo=response['response'])
+        except Exception as e:
+            # Отправка ответа
+            await message.answer(response['response'])
+        #
+        await state.set_state(Image.text)
+    else:
+        await message.answer(f'Недостаточно средств')
+
+
+
+

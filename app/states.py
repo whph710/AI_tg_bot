@@ -7,3 +7,10 @@ class Chat(StatesGroup):
     text = State()
     # Состояние ожидания ответа
     wait = State()
+
+
+class Image(StatesGroup):
+    # Состояние ожидания ввода текста
+    text = State()
+    # Состояние ожидания ответа
+    wait = State()

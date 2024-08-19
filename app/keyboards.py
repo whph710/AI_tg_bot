@@ -6,6 +6,8 @@ main = ReplyKeyboardMarkup(
     keyboard=[
         # Кнопка для вызова генератора текста
         [KeyboardButton(text='Генератор текста')],
+        # Кнопка для вызова генератора изображений
+        [KeyboardButton(text='Генератор изображения')],
     ],
     # Размер клавиатуры
     resize_keyboard=True,
