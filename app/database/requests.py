@@ -26,11 +26,9 @@ async def get_user(tg_id):
         return await session.scalar(select(User).where(User.tg_id == tg_id))
 
 
-async def calculate(tg_id, summ, model_name):
+async def calculate(tg_id, summ, model_name, user):
     # Создание асинхронной сессии для работы с базой данных
     async with async_session() as session:
-        # Выполнение запроса на выборку пользователя по его ID в Telegram
-        user = await session.scalar(select(User).where(User.tg_id == tg_id))
         model = await session.scalar(select(AiModel).where(AiModel.name == model_name))
         new_balance = Decimal(Decimal(user.balance) - Decimal(Decimal(summ) * Decimal(model.price)))
         await session.execute(update(User).where(User.id == user.id).values(balance=str(new_balance)))
