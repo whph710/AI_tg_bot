@@ -14,3 +14,7 @@ class Image(StatesGroup):
     text = State()
     # Состояние ожидания ответа
     wait = State()
+
+
+class Newsletter(StatesGroup):
+    message = State()

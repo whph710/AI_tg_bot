@@ -11,7 +11,8 @@ client = AsyncOpenAI(
     api_key=OpenAI,  # API ключ OpenAI
     http_client=httpx.AsyncClient(  # HTTP клиент для отправки запросов
         proxies=proxy,  # Прокси сервер для обхода ограничений
-        transport=httpx.HTTPTransport(local_address='0.0.0.0')  # Транспорт для отправки запросов
+        transport=httpx.HTTPTransport(
+            local_address='0.0.0.0')  # Транспорт для отправки запросов
     )
 )
 
